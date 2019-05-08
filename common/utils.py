@@ -25,11 +25,11 @@ class Utils(object):
         workspace = os.getcwd()
         time = datetime.now().date()
 
-        data_loc = '{}/algoTrading/data/'.format(workspace)
+        data_loc = '{}/data/'.format(workspace)
 
         file_name = '{}_{}_{}.{}'.format(symbol, interval, time, data_type)
 
         with open(data_loc + file_name, 'w+') as file:
-            file.write(response.content)
+            file.write(response.content.decode("utf-8") )
 
         return data_loc + file_name

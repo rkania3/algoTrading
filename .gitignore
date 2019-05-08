@@ -1,3 +1,7 @@
 # Local files
 env/
 .idea/
+core/placeholder.py
+docs/placeholder.py
+tests/placeholder.py
+test.py
