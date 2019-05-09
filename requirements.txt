@@ -3,3 +3,6 @@ requests
 boto3
 configparser
 datetime
+flasgger
+flask
+jsonify
