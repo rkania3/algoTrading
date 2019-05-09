@@ -3,3 +3,7 @@ requests
 boto3
 configparser
 datetime
+flask
+lxml
+argparse
+json
