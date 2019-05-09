@@ -7,3 +7,5 @@ flask
 lxml
 argparse
 json
+flasgger
+jsonify

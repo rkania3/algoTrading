@@ -3,7 +3,7 @@ from common.scraper import parse
 
 app = Flask(__name__)
 
-@app.route("/quote")
+@app.route("/api/quote", methods=['GET'])
 def getQuote():
     ticker = request.args.get('ticker')
     onlyPrice = request.args.get('price')
@@ -12,5 +12,8 @@ def getQuote():
         resp = resp['currentPrice']
     return jsonify(resp), 200
 
-if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=8000, threaded=True)
+@app.route('/api/get_aplha_data/<string:symbol>/', methods=['GET'])
+def get_alpha_data():
+    return None
+
+app.run(debug=True)
