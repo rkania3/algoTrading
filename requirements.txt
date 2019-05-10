@@ -3,6 +3,9 @@ requests
 boto3
 configparser
 datetime
-flasgger
 flask
+lxml
+argparse
+json
+flasgger
 jsonify
