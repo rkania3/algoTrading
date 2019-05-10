@@ -39,3 +39,18 @@ class Alpha(object):
             file.write(response.content.decode("utf-8") )
 
         return data_loc + file_name
+
+    # Helper function for possible inputs
+    # In: None
+    # Out; String of options
+    def get_data_help(self):
+        return """
+        freq options:                       interval options:       data_type options:
+            TIME_SERIES_INTRADAY                1min                    csv
+            TIME_SERIES_DAILY                   5min                    json
+            TIME_SERIES_DAILY_ADJUSTED          15min
+            TIME_SERIES_WEEKLY                  30min
+            TIME_SERIES_WEEKLY_ADJUSTED         60min
+            TIME_SERIES_MONTHLY
+            TIME_SERIES_MONTHLY_ADJUSTED
+        """
