@@ -6,3 +6,4 @@ docs/placeholder.py
 tests/placeholder.py
 test.py
 data/
+properties/secrets.properties
