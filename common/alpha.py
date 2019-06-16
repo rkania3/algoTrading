@@ -2,7 +2,7 @@ import os
 import requests
 from datetime import datetime
 
-from common.config import config
+from common import config
 
 class Alpha(object):
 

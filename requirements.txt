@@ -8,3 +8,4 @@ lxml
 argparse
 flasgger
 jsonify
+splinter
