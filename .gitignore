@@ -7,3 +7,4 @@ tests/placeholder.py
 test.py
 data/
 properties/secrets.properties
+common/__pycache__
