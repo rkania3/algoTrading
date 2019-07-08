@@ -4,13 +4,15 @@ import requests
 from shutil import which
 from splinter import Browser
 import urllib.parse as up
+import json
 
 from common import config
 
 class TD(object):
 
     def __init__(self):
-        print('Creating TD Ameritrade Interface Object')
+        self.token = self.get_token()
+        self.client_id = config.get_secret('td', 'client.id')
 
     def get_token(self):
 
@@ -78,3 +80,70 @@ class TD(object):
         access_token = decoded_content['access_token']
 
         return access_token
+
+    def get_account(self):
+        url = config.get('td', 'get.accounts')
+
+        headers = {
+            'Authorization': "Bearer {}".format(self.token)
+        }
+
+        payload = {
+            'apikey': self.client_id
+        }
+
+        response = requests.get(url, params=payload, headers=headers)
+
+        return response.content.decode('utf-8')
+
+    def get_movers(self):
+        url = config.get('td', 'get.movers')
+
+        headers = {
+            'Authorization': "Bearer {}".format(self.token)
+        }
+
+        payload = {
+            'apikey': self.client_id,
+            'direction': 'up',
+            'change': 'percent'
+        }
+
+        response = requests.get(url, params=payload, headers=headers)
+
+        return json.loads(response.content.decode('utf-8'))
+
+    def get_price_history(self, symbol, period, period_type, frequency, frequency_type, needExtendedHoursData):
+        url = config.get('td', 'get.price.history').format(symbol)
+
+        headers = {
+            'Authorization': "Bearer {}".format(self.token)
+        }
+
+        payload = {
+            'apikey': self.client_id,
+            'period': period,
+            'periodType': period_type,
+            'frequency': frequency,
+            'frequencyType': frequency_type,
+            'needExtendedHoursData': needExtendedHoursData
+        }
+
+        response = requests.get(url, params=payload, headers=headers)
+
+        return json.loads(response.content.decode('utf-8'))
+
+    def get_quote(self, symbol):
+        url = config.get('td', 'get.quote').format(symbol)
+
+        headers = {
+            'Authorization': "Bearer {}".format(self.token)
+        }
+
+        payload = {
+            'apikey': self.client_id
+        }
+
+        response = requests.get(url, params=payload, headers=headers)
+
+        return json.loads(response.content.decode('utf-8'))
