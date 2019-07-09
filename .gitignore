@@ -9,3 +9,4 @@ data/
 properties/secrets.properties
 common/__pycache__
 .ipynb_checkpoints/
+*.pyc

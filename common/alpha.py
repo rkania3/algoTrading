@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 from datetime import datetime
 
@@ -58,14 +59,14 @@ class Alpha(object):
     # Get indicator data from Alpha Vantage
     # In: function - indicator, symbol - stock symbol, interval - time between 2 data points
     #   time_period - number of points for calc, series_type - desired price type, data_type - csv or json
-    def get_indicator(self, function, symbol, interval, time_period, series_type='close', data_type='csv'):
+    def get_indicator(self, function, symbol, interval, time_period, series_type='close'):
         # Get AlphaVantage API Key
         key = config.get('alpha-vantage', 'api.key')
 
         # Format URL
         url = config.get('alpha-vantage', 'indicator.data')
 
-        url = url.format(function, symbol, interval, time_period, series_type, data_type, key)
+        url = url.format(function, symbol, interval, time_period, series_type, key)
 
         print("Getting data from: {}".format(url))
 
@@ -77,14 +78,14 @@ class Alpha(object):
             raise e
 
         # Save data
-        workspace = os.getcwd()
-        time = datetime.now().date()
+        # workspace = os.getcwd()
+        # time = datetime.now().date()
+        #
+        # data_loc = '{}/data/'.format(workspace)
+        #
+        # file_name = '{}_{}_{}.{}'.format(function, symbol, time, data_type)
+        #
+        # with open(data_loc + file_name, 'w+') as file:
+        #     file.write(response.content.decode("utf-8") )
 
-        data_loc = '{}/data/'.format(workspace)
-
-        file_name = '{}_{}_{}.{}'.format(function, symbol, time, data_type)
-
-        with open(data_loc + file_name, 'w+') as file:
-            file.write(response.content.decode("utf-8") )
-
-        return data_loc + file_name
+        return json.loads(response.content.decode('utf-8'))

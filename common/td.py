@@ -21,7 +21,7 @@ class TD(object):
             'executable_path': config.get_secret('paths', 'chromedriver.path')
         }
 
-        browser = Browser('chrome', **executable_path, headless=False)
+        browser = Browser('chrome', **executable_path, headless=True)
 
         client_id = config.get_secret('td', 'client.id')
         redirect_url = config.get_secret('td', 'redirect.url')
@@ -113,7 +113,7 @@ class TD(object):
 
         return json.loads(response.content.decode('utf-8'))
 
-    def get_price_history(self, symbol, period, period_type, frequency, frequency_type, needExtendedHoursData):
+    def get_price_history(self, symbol, period, period_type, frequency, frequency_type, start_date, end_date, needExtendedHoursData):
         url = config.get('td', 'get.price.history').format(symbol)
 
         headers = {
@@ -122,10 +122,11 @@ class TD(object):
 
         payload = {
             'apikey': self.client_id,
-            'period': period,
             'periodType': period_type,
             'frequency': frequency,
             'frequencyType': frequency_type,
+            'startDate': start_date,
+            'endDate': end_date,
             'needExtendedHoursData': needExtendedHoursData
         }
 
