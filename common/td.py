@@ -79,6 +79,8 @@ class TD(object):
 
         access_token = decoded_content['access_token']
 
+        config.set_secret('auth', 'token', access_token)
+
         return access_token
 
     def get_account(self):
