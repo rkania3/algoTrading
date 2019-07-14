@@ -6,8 +6,7 @@ import logging
 import datetime
 import pandas as pd
 import numpy as np
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-import plotly.graph_objs as go
+from plotly.offline import plot
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -20,7 +19,7 @@ def main():
     movers = td_client.get_movers()
 
     valid = []
-    watchlist = ['AMD', 'UGAZ', 'DGAZ', 'GUSH', 'DRIP', 'SQQQ', 'TQQQ', 'UWT', 'DWT', 'JNUG', 'JDST']
+    watchlist = ['AMD', 'UGAZ', 'DGAZ', 'GUSH', 'DRIP', 'SQQQ', 'TQQQ', 'UWT', 'DWT', 'JNUG', 'JDST', 'TMUS', 'MU']
 
     for stock in movers:
         if stock['totalVolume'] > 100000 and stock['last'] > 10:
@@ -62,7 +61,7 @@ def main():
         DECREASING_COLOR = 'r'
 
         # Focusing on 1 day worth of data
-        start_chart = datetime.datetime.fromtimestamp((end - 86400000) / 1000.0).strftime('%Y-%m-%d %H:%M')
+        start_chart = datetime.datetime.fromtimestamp((end - 86400000*2) / 1000.0).strftime('%Y-%m-%d %H:%M')
         df_trim = df[df.index >= start_chart]
 
         # Creating core candlestick graph
@@ -74,7 +73,7 @@ def main():
             close=df_trim['close'],
             x=df_trim.index,
             yaxis='y2',
-            name='Historic Data',
+            name='Historic Data for {}'.format(stock),
             increasing=dict(line=dict(color=INCREASING_COLOR)),
             decreasing=dict(line=dict(color=DECREASING_COLOR)),
         )]
@@ -143,17 +142,17 @@ def main():
                                 fill=None,
                                 yaxis='y2', name='20 Day Exp Moving Average'))
 
-        # Highlight where 9 day EMA is greater than 20 day EMA
-        df_trim['cross'] = np.where(df_trim['9_day_ema'] - df_trim['20_day_ema'] >= df_trim['close'] * .0005,
-                                    df_trim['close'] * 1.05, None)
+        # Highlight where 9 day EMA is less than 20 day EMA
+        df_trim['cross'] = np.where(df_trim['9_day_ema'] - df_trim['20_day_ema'] <= df_trim['close'] * .0005,
+                                    df_trim['close'] * .95, None)
 
         mv_y = df_trim['cross']
         mv_x = list(df_trim.index)
 
         fig['data'].append(dict(x=mv_x, y=mv_y, type='scatter', mode='lines',
                                 line=dict(width=3),
-                                marker=dict(color='#00FF00'),
-                                yaxis='y2', name='Buy'))
+                                marker=dict(color='#FA6C76'),
+                                yaxis='y2', name='Undervalued'))
 
         # Add volume bars
         fig['data'].append(dict(x=df_trim.index, y=df_trim['volume'],
